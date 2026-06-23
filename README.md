@@ -200,5 +200,9 @@ The database files are managed in `database/`. You can connect to `ecobuild.db` 
 *   **Predictive ML Modeling**: Train regression models (e.g. Random Forests) on ASHRAE building audits to predict energy savings based on real-world inputs.
 *   **Live Utility API Ingestion**: Integrate with the EPA ENERGY STAR Portfolio Manager API to automate monthly billing imports.
 
+## Related Project
+This project builds on my earlier **Sustainable Building Performance Analytics Dashboard**, which focused on energy performance, construction costs, carbon emissions, lifecycle cost, and retrofit analytics.
+
+Original Analytics Project: https://github.com/SharadhaKarthikeyan/sustainable-building-performance-analytics
 ---
 **Author: Sharadha Karthikeyan**
