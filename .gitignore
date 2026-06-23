@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+.env
+venv/
+.venv/
+*.log
+*.tmp*
+*desktop.ini*
+database/*.db
+ecobuild.db
