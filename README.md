@@ -194,19 +194,4 @@ The database files are managed in `database/`. You can connect to `ecobuild.db` 
 *   **Live Utility API Ingestion**: Integrate with the EPA ENERGY STAR Portfolio Manager API to automate monthly billing imports.
 
 ---
-
-## Resume Bullets
-*   **Developed EcoBuild Intelligence**, a building energy analytics dashboard using Streamlit, Plotly, and SQLite, enabling building stakeholders to model EUI, carbon emissions, and operational cost savings.
-*   **Implemented a multi-factor Risk & Retrofit Prioritization model** that weights building HVAC age, insulation, window glazing, and carbon intensity to rank properties into Low, High, or Critical risk profiles.
-*   **Built a dual-mode reporting and query engine** integrating OpenAI API and a custom rule-based local parser, capable of executing pandas queries dynamically to respond to natural language portfolio questions.
-*   **Designed a relational SQL seeder** using SQLite to generate monthly billing records, seasonal HVAC energy variations, and hardware inventory details for 2,500 buildings.
-
----
-
-## Technical Interview Explanation
-*   **Why SQLite and Pandas?**: I chose Pandas for rapid column operations, array manipulations, and risk calculations. I mirrored this memory state into SQLite because building portfolios require structured relationships (e.g., one building has many monthly utility billing entries and multiple hardware assets). By using SQLite, I demonstrate a database architecture suitable for scale and standard SQL querying.
-*   **Why Normalization in Risk Scoring?**: Buildings behave differently by property type (e.g., a lab consumes 5x more energy than an apartment). Scoring EUI globally would categorize all hospitals and labs as critical risk. By grouping by `building_type` and normalizing the EUI percentile score, the model ranks buildings fairly against peers of the same category.
-*   **Why Dual In-App Reporting?**: In professional environments, API keys can be revoked or restricted due to client data privacy. Implementing a rule-based query parser guarantees that the application runs locally without any cloud dependencies, falling back to OpenAI only when explicit credentials are set.
-
----
 **Author: Sharadha Karthikeyan**
