@@ -27,49 +27,64 @@ predefined_queries = {
     "critical": "Show critical-risk buildings built before 1990."
 }
 
-query_to_run = ""
-
-with qc1:
-    if st.button("🔧 Priority Retrofits", use_container_width=True):
-        query_to_run = predefined_queries["retrofit"]
-with qc2:
-    if st.button("⚠️ Risk Case Study", use_container_width=True):
-        query_to_run = predefined_queries["risk"]
-with qc3:
-    if st.button("🍃 GHG By Type", use_container_width=True):
-        query_to_run = predefined_queries["carbon"]
-with qc4:
-    if st.button("📅 Monthly Summary", use_container_width=True):
-        query_to_run = predefined_queries["report"]
-with qc5:
-    if st.button("💸 Cost Reduction", use_container_width=True):
-        query_to_run = predefined_queries["cost"]
-with qc6:
-    if st.button("📊 Office vs School", use_container_width=True):
-        query_to_run = predefined_queries["compare"]
-with qc7:
-    if st.button("💨 Aging HVACs", use_container_width=True):
-        query_to_run = predefined_queries["hvac"]
-with qc8:
-    if st.button("⌛ Historical Risks", use_container_width=True):
-        query_to_run = predefined_queries["critical"]
-
-st.divider()
-
-# Input box
-user_input = st.text_input("Ask a question about the dataset:", value=query_to_run if query_to_run else "", placeholder="e.g. Which buildings should be retrofitted first?")
-
-# Chat history initialization
+# Initialize session state keys
+if 'query_text' not in st.session_state:
+    st.session_state['query_text'] = ""
 if 'chat_history' not in st.session_state:
     st.session_state['chat_history'] = []
 
-if st.button("Send Query", key="send_btn") or (query_to_run and not user_input):
-    active_query = user_input if user_input else query_to_run
-    if active_query:
-        with st.spinner("Analyzing portfolio dataset and compiling response..."):
-            response = handle_assistant_query(active_query, df)
-            # Append to history
-            st.session_state['chat_history'].append((active_query, response))
+run_query = False
+active_query = ""
+
+# Check quick query buttons
+if qc1.button("🔧 Priority Retrofits", use_container_width=True):
+    st.session_state['query_text'] = predefined_queries["retrofit"]
+    run_query = True
+    active_query = predefined_queries["retrofit"]
+if qc2.button("⚠️ Risk Case Study", use_container_width=True):
+    st.session_state['query_text'] = predefined_queries["risk"]
+    run_query = True
+    active_query = predefined_queries["risk"]
+if qc3.button("🍃 GHG By Type", use_container_width=True):
+    st.session_state['query_text'] = predefined_queries["carbon"]
+    run_query = True
+    active_query = predefined_queries["carbon"]
+if qc4.button("📅 Monthly Summary", use_container_width=True):
+    st.session_state['query_text'] = predefined_queries["report"]
+    run_query = True
+    active_query = predefined_queries["report"]
+if qc5.button("💸 Cost Reduction", use_container_width=True):
+    st.session_state['query_text'] = predefined_queries["cost"]
+    run_query = True
+    active_query = predefined_queries["cost"]
+if qc6.button("📊 Office vs School", use_container_width=True):
+    st.session_state['query_text'] = predefined_queries["compare"]
+    run_query = True
+    active_query = predefined_queries["compare"]
+if qc7.button("💨 Aging HVACs", use_container_width=True):
+    st.session_state['query_text'] = predefined_queries["hvac"]
+    run_query = True
+    active_query = predefined_queries["hvac"]
+if qc8.button("⌛ Historical Risks", use_container_width=True):
+    st.session_state['query_text'] = predefined_queries["critical"]
+    run_query = True
+    active_query = predefined_queries["critical"]
+
+st.divider()
+
+# Text input - bind to st.session_state['query_text'] via key
+st.text_input("Ask a question about the dataset:", key="query_text")
+
+# Send Query button
+if st.button("Send Query", key="send_btn"):
+    run_query = True
+    active_query = st.session_state['query_text']
+
+# Process the query
+if run_query and active_query:
+    with st.spinner("Analyzing portfolio dataset and compiling response..."):
+        response = handle_assistant_query(active_query, df)
+        st.session_state['chat_history'].append((active_query, response))
 
 # Display Chat History (most recent first)
 if st.session_state['chat_history']:
